@@ -209,6 +209,15 @@ select,.field{width:100%;min-height:46px;border:1px solid var(--line);border-rad
 .green-flash{animation:gflash .5s}
 @keyframes gflash{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 60%,transparent)}100%{box-shadow:0 0 0 18px transparent}}
 a{color:var(--pri)}
+.opt.trans{font-size:15.5px;font-weight:600;line-height:1.4}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.mcol{display:grid;gap:10px;align-content:start}
+.mcard{min-height:58px;border:2px solid var(--line);border-radius:14px;background:var(--card);padding:8px 10px;font-weight:700;font-size:14.5px;line-height:1.3;box-shadow:0 2px 0 var(--line);color:var(--ink);transition:transform .1s,border-color .2s,background .2s,opacity .3s}
+.mcard.sel{border-color:var(--pri);background:var(--soft);transform:translateY(-2px)}
+.mcard.done{border-color:var(--ok);background:var(--ok-soft);opacity:.45}
+.mcard.bad{border-color:var(--no);background:var(--no-soft);animation:shake .4s}
+.slot{display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:40px;border:0;border-bottom:3px solid var(--pri);background:var(--soft);border-radius:8px;margin:0 3px;padding:2px 10px;font-weight:800;color:var(--mute);vertical-align:middle;font-family:var(--font-en)}
+.slot.filled{color:var(--pri)}
 .flip.tall{height:min(620px,72vh)}
 .dlg{margin-top:14px;padding-top:10px;border-top:1px dashed var(--line)}
 .bubble{max-width:88%;padding:10px 12px;border-radius:16px;margin:6px 0;font-family:var(--font-en);font-size:15.5px;line-height:1.45}
@@ -894,6 +903,170 @@ sign of the times|시대상을 보여 주는 것|사회 변화를 상징하는 �
 jump to conclusions|성급하게 결론 내리다|증거 없이 판단하는 것을 경계할 때|Let's not jump to conclusions before the report comes out.|보고서 나오기 전에 섣불리 결론 내지 말자.|The media jumped to conclusions about the crash.|언론은 그 사고에 대해 성급하게 결론을 내렸어요.|He's late. He must have quit.|Let's not jump to conclusions.
 food for thought|생각해 볼 거리|깊이 생각하게 만드는 내용|The documentary gave me a lot of food for thought.|그 다큐는 생각할 거리를 많이 줬어요.|Your comment is food for thought. Thanks.|말씀해 주신 거 곰곰이 생각해 볼게요. 감사해요.|What did you think of the lecture?|It was definitely food for thought.
 play a role in|~에 역할을 하다, 영향을 주다|원인이나 기여를 설명할 때|Genetics plays a role in how we age.|유전은 우리가 늙는 방식에 영향을 줘요.|Social media played a big role in the protests.|SNS가 시위에 큰 역할을 했어요.|Why did the company fail?|Bad timing played a role in it.`;
+/* 어색한 문장 찾기 — 한국어 화자가 자주 하는 실수를 직접 작성 (형식: 어색한 문장|자연스러운 문장|해설) */
+const ERR_RAW=`I'm agree with you.|I agree with you.|agree는 동사라서 앞에 be동사(am)를 붙이지 않아요.
+Let's discuss about the plan.|Let's discuss the plan.|discuss는 타동사라 about 없이 바로 목적어를 써요.
+Can you explain me how it works?|Can you explain to me how it works?|explain은 사람을 바로 목적어로 받지 않아요. explain to me 형태로 써요.
+Please reply me as soon as possible.|Please reply to me as soon as possible.|reply는 reply to someone 형태로 써요.
+I'm looking forward to see you.|I'm looking forward to seeing you.|look forward to의 to는 전치사라 뒤에 -ing가 와요.
+He said me that he was tired.|He told me that he was tired.|'누구에게 말하다'는 tell someone. say는 사람을 바로 목적어로 받지 않아요.
+Can you borrow me your pen?|Can you lend me your pen?|빌려주는 건 lend, 빌리는 건 borrow예요.
+She learned me how to swim.|She taught me how to swim.|가르치다는 teach, learn은 '배우다'예요.
+I'm interesting in photography.|I'm interested in photography.|관심을 느끼는 사람은 interested. interesting은 '흥미로운(대상)'이에요.
+I was so boring at the party.|I was so bored at the party.|지루함을 느낀 사람은 bored. boring이면 '내가 지루한 사람'이라는 뜻이 돼요.
+The movie was really bored.|The movie was really boring.|지루하게 만드는 대상은 boring.
+I'm so confusing right now.|I'm so confused right now.|헷갈리는 사람은 confused.
+I'm so exciting about the trip!|I'm so excited about the trip!|설레는 사람은 excited.
+How do you think about this idea?|What do you think about this idea?|의견을 물을 땐 What do you think...? How는 방법을 물어요.
+What means this word?|What does this word mean?|일반동사 의문문은 does + 주어 + 동사원형.
+Where you are going?|Where are you going?|의문문은 be동사를 주어 앞으로 보내요.
+Do you know where is the station?|Do you know where the station is?|간접의문문은 '주어 + 동사' 순서로 써요.
+He don't like coffee.|He doesn't like coffee.|3인칭 단수 주어에는 doesn't.
+She can sings very well.|She can sing very well.|조동사 뒤에는 동사원형.
+I must to finish this today.|I must finish this today.|must 뒤에는 to를 쓰지 않아요.
+Did you ate breakfast?|Did you eat breakfast?|did 뒤에는 동사원형.
+I didn't went to work yesterday.|I didn't go to work yesterday.|didn't 뒤에는 동사원형.
+I have seen him yesterday.|I saw him yesterday.|yesterday처럼 끝난 과거 시점에는 현재완료 대신 과거형.
+I have been to Paris last year.|I went to Paris last year.|last year 같은 과거 시점에는 과거형.
+I live in Seoul since 2015.|I've lived in Seoul since 2015.|since(~ 이후 계속)는 현재완료와 함께 써요.
+It's raining from this morning.|It's been raining since this morning.|'아침부터 지금까지'는 since + 현재완료진행.
+If it will rain tomorrow, we'll stay home.|If it rains tomorrow, we'll stay home.|조건을 나타내는 if절에서는 미래도 현재형으로.
+I'll call you when I will arrive.|I'll call you when I arrive.|시간을 나타내는 when절에서도 미래를 현재형으로.
+I'm used to wake up early.|I'm used to waking up early.|be used to(~에 익숙하다)의 to는 전치사라 -ing가 와요.
+I enjoy to cook on weekends.|I enjoy cooking on weekends.|enjoy 뒤에는 -ing.
+You should avoid to drink coffee at night.|You should avoid drinking coffee at night.|avoid 뒤에는 -ing.
+I suggest to leave early.|I suggest leaving early.|suggest 뒤에는 -ing나 that절이 와요.
+I want that you come to my party.|I want you to come to my party.|want + 사람 + to부정사.
+My boss let me to leave early.|My boss let me leave early.|let + 사람 + 동사원형(to 없이).
+That joke made me to laugh.|That joke made me laugh.|make + 사람 + 동사원형.
+I'm student.|I'm a student.|셀 수 있는 명사 단수 앞에는 a가 필요해요.
+He is engineer at a car company.|He is an engineer at a car company.|직업 앞에도 a/an을 붙여요.
+It takes a hour to get there.|It takes an hour to get there.|hour는 모음 소리로 시작해서 an.
+She goes to an university in Busan.|She goes to a university in Busan.|university는 '유' 소리로 시작해서 a.
+Can you give me an advice?|Can you give me some advice?|advice는 셀 수 없는 명사예요.
+I need some informations about the tour.|I need some information about the tour.|information은 셀 수 없어 -s를 붙이지 않아요.
+We bought new furnitures for the living room.|We bought new furniture for the living room.|furniture는 셀 수 없는 명사예요.
+I have many homeworks tonight.|I have a lot of homework tonight.|homework는 셀 수 없는 명사예요.
+How many luggages do you have?|How many bags do you have?|luggage는 셀 수 없어서 개수는 bags로 물어요.
+There is many people in the park.|There are many people in the park.|복수 명사에는 There are.
+Everyone are waiting for you.|Everyone is waiting for you.|everyone은 단수 취급해요.
+Every students has a laptop.|Every student has a laptop.|every 뒤에는 단수 명사.
+One of my friend lives in Canada.|One of my friends lives in Canada.|one of 뒤에는 복수 명사.
+The police is looking for him.|The police are looking for him.|police는 항상 복수 취급해요.
+This is more better than the old one.|This is much better than the old one.|better가 이미 비교급이라 more를 겹쳐 쓰지 않아요.
+It's the most best pizza I've ever had.|It's the best pizza I've ever had.|best가 이미 최상급이에요.
+This exam was more easier than I thought.|This exam was easier than I thought.|easier가 이미 비교급이에요.
+Let's go to shopping this weekend.|Let's go shopping this weekend.|go + -ing 활동에는 to를 쓰지 않아요.
+I went to home after work.|I went home after work.|home은 여기서 부사라 to가 필요 없어요.
+Can you come to here for a second?|Can you come here for a second?|here는 부사라 to 없이 써요.
+I went to there last summer.|I went there last summer.|there는 부사라 to 없이 써요.
+I'll see you in Monday.|I'll see you on Monday.|요일 앞에는 on.
+I was born at 1995.|I was born in 1995.|연도 앞에는 in.
+I can't sleep in night.|I can't sleep at night.|'밤에'는 at night.
+Please finish the report until Friday.|Please finish the report by Friday.|마감 기한은 by, until은 '그때까지 계속'이에요.
+I've been here since three weeks.|I've been here for three weeks.|기간의 길이는 for, 시작 시점은 since.
+I'm waiting the bus.|I'm waiting for the bus.|wait는 wait for + 대상.
+Wait me here, okay?|Wait for me here, okay?|wait는 wait for + 대상.
+I like to listen music while I work.|I like to listen to music while I work.|listen은 listen to + 대상.
+We arrived to the airport at six.|We arrived at the airport at six.|도착 장소는 arrive at(좁은 장소) / arrive in(도시·나라).
+She married with a doctor.|She married a doctor.|marry는 바로 목적어를 써요. (be married to)
+Please contact to me if you have questions.|Please contact me if you have questions.|contact는 타동사라 to 없이 써요.
+He entered into the room quietly.|He entered the room quietly.|'방에 들어가다'의 enter는 into 없이 써요.
+You need to attend to the meeting at ten.|You need to attend the meeting at ten.|회의에 참석하다는 attend the meeting. attend to는 '처리하다'예요.
+We need to consider about the cost.|We need to consider the cost.|consider는 타동사예요.
+She didn't mention about the price.|She didn't mention the price.|mention은 타동사예요.
+He resembles with his father.|He resembles his father.|resemble은 타동사예요.
+He lacks of experience.|He lacks experience.|동사 lack은 of 없이 써요. (명사 a lack of는 가능)
+Please join with us for dinner.|Please join us for dinner.|join은 타동사예요.
+I'll return back the book tomorrow.|I'll return the book tomorrow.|return에 '돌려'의 뜻이 있어 back이 중복돼요.
+He approached to the door.|He approached the door.|approach(다가가다)는 타동사예요.
+I'm not good to cook.|I'm not good at cooking.|'~를 잘하다'는 good at + 명사/-ing. good to + 동사는 뜻이 달라요.
+She is good at cook.|She is good at cooking.|전치사 at 뒤에는 명사나 -ing.
+I'm afraid from dogs.|I'm afraid of dogs.|'~를 무서워하다'는 afraid of.
+My phone is similar with yours.|My phone is similar to yours.|similar to로 써요.
+This one is different with that one.|This one is different from that one.|different from(미국은 than도 씀). with는 쓰지 않아요.
+Because of I was sick, I stayed home.|Because I was sick, I stayed home.|because of 뒤엔 명사, 문장이 오면 because.
+Despite of the rain, we went hiking.|Despite the rain, we went hiking.|despite는 of 없이 써요. (in spite of는 가능)
+Although it was late, but we kept working.|Although it was late, we kept working.|although와 but을 함께 쓰지 않아요.
+According to me, the plan is too risky.|In my opinion, the plan is too risky.|according to는 남의 말이나 자료를 인용할 때 써요.
+I'm knowing the answer.|I know the answer.|know는 진행형으로 쓰지 않아요.
+She has 25 years old.|She is 25 years old.|나이는 be동사로 말해요.
+You're coming tomorrow, isn't it?|You're coming tomorrow, aren't you?|부가의문문은 앞 문장의 주어·동사에 맞춰요.
+It's depend on the weather.|It depends on the weather.|depend는 동사라 It depends.
+Thanks God it's Friday.|Thank God it's Friday.|관용 표현은 Thank God.
+Congratulation on your promotion!|Congratulations on your promotion!|축하 인사는 항상 Congratulations.
+Sorry for late.|Sorry I'm late.|'늦어서 미안'은 Sorry I'm late 또는 Sorry for being late.
+I have a question to you.|I have a question for you.|'너에게 질문이 있다'는 a question for you.
+How to say this in English?|How do you say this in English?|질문할 때는 완전한 의문문으로 말해요.
+Can you make a photo of us?|Can you take a photo of us?|사진을 찍다는 take a photo.
+I did a big mistake at work.|I made a big mistake at work.|실수하다는 make a mistake.
+I have to make my homework first.|I have to do my homework first.|숙제하다는 do homework.
+I'll make a shower and then call you.|I'll take a shower and then call you.|샤워하다는 take a shower(영국은 have a shower).
+Did you eat your medicine?|Did you take your medicine?|약을 먹다는 take medicine.
+Can you open the light?|Can you turn on the light?|불을 켜다는 turn on.
+Please close the TV before bed.|Please turn off the TV before bed.|TV를 끄다는 turn off.
+Let me open my computer first.|Let me turn on my computer first.|컴퓨터를 켜다는 turn on.
+I bought a new handphone.|I bought a new phone.|handphone은 콩글리시. phone, cell phone(미), mobile(영).
+Let's go Dutch pay.|Let's split the bill.|Dutch pay는 콩글리시예요. split the bill 또는 go Dutch.
+I went eye shopping at the mall.|I went window shopping at the mall.|구경만 하는 쇼핑은 window shopping.
+Can I borrow your hotchkiss?|Can I borrow your stapler?|스테이플러를 hotchkiss라고 하지 않아요.
+I live in an apart near the station.|I live in an apartment near the station.|apart는 '떨어져서'라는 뜻이에요.
+He did cunning on the test.|He cheated on the test.|커닝은 cheating. cunning은 '교활한'이에요.
+I need a morning call at six.|I need a wake-up call at six.|호텔 모닝콜은 wake-up call.
+I go to health every morning.|I go to the gym every morning.|헬스장은 gym.
+I'm doing arbeit at a café.|I have a part-time job at a café.|아르바이트는 part-time job.
+My car got a punk on the highway.|My car got a flat tire on the highway.|타이어 펑크는 flat tire(영국은 flat tyre).
+Where's the remocon?|Where's the remote?|리모컨은 remote (control).
+Is there a concent near the table?|Is there an outlet near the table?|콘센트는 outlet(미)·socket(영).
+He's a really funny gagman.|He's a really funny comedian.|개그맨은 comedian.
+Can I have your sign?|Can I have your autograph?|연예인 사인은 autograph, 서류 서명은 signature.
+Check the back mirror before changing lanes.|Check the rearview mirror before changing lanes.|룸미러는 rearview mirror.
+Let's take a self-camera here!|Let's take a selfie here!|셀카는 selfie.
+My mental is really weak these days.|I've been struggling mentally these days.|'멘탈'처럼 mental을 명사로 쓰지 않아요.
+I have a gips on my arm.|I have a cast on my arm.|깁스는 cast.
+I want to refund this jacket.|I'd like to return this jacket.|refund는 '돈을 돌려주다'라서 손님이 쓰면 어색해요. return 또는 get a refund.
+Let's one shot!|Bottoms up!|'원샷'은 Bottoms up!이라고 해요.
+Keep me in loop, please.|Keep me in the loop, please.|관용구는 in the loop로 고정이에요.
+Let's touch the base next week.|Let's touch base next week.|touch base는 관사 없이 써요.
+Are we on a same page?|Are we on the same page?|on the same page로 고정이에요.
+I'm running lately, sorry!|I'm running late, sorry!|'늦다'는 late. lately는 '최근에'예요.
+Something came out at work.|Something came up at work.|'일이 생기다'는 come up.
+Thanks for the head-up.|Thanks for the heads-up.|heads-up은 s가 붙은 형태로 써요.
+Let me get back you on that.|Let me get back to you on that.|get back to someone으로 써요.
+There seems a problem with my order.|There seems to be a problem with my order.|There seems to be...가 맞는 형태예요.
+Text to me when you get home.|Text me when you get home.|text는 사람을 바로 목적어로 받아요.
+Long time no see you!|Long time no see!|고정 표현이라 you를 붙이지 않아요.
+I'm fed up with to wait.|I'm fed up with waiting.|전치사 with 뒤에는 -ing.
+It slipped out my mind.|It slipped my mind.|'깜빡했다'는 It slipped my mind.
+Can I pick up your brain?|Can I pick your brain?|pick someone's brain에는 up을 쓰지 않아요.
+I'm boring of this job.|I'm bored with this job.|싫증 난 사람은 bored. boring of라고 하지 않아요.
+I'm worry about the test.|I'm worried about the test.|worry는 동사라 be동사와 쓸 땐 worried.
+It's a piece of a cake.|It's a piece of cake.|관용구 a piece of cake에는 cake 앞에 a가 없어요.`;
+/* 격식·뉘앙스 판별 — 같은 의도의 표현 중 상황에 맞는 것 (형식: 상황|정답|오답1|오답2|해설) */
+const FORMAL_RAW=`상사에게 보내는 이메일에서 빠른 회신을 부탁할 때|Please reply at your earliest convenience.|Get back to me ASAP, okay?|Answer me now.|격식 이메일에는 at your earliest convenience가 정중해요.
+친한 친구와의 약속을 급하게 취소할 때|Sorry, something came up. Rain check?|I regret to inform you that I am unable to attend.|Your invitation is hereby declined.|친구 사이에 격식 통지문 같은 문장은 오히려 어색해요.
+회의에서 상사의 의견에 정중하게 반대할 때|I see your point, but I have some concerns about the timeline.|That's just wrong.|No way, that's crazy.|윗사람에게는 인정 + 우려 표현으로 부드럽게 반대해요.
+동료가 사소한 실수를 사과할 때 가볍게 받아 줄 때|No worries, it happens.|Your apology has been formally accepted.|I will consider forgiving you.|가벼운 상황엔 No worries가 자연스러워요.
+고객센터 직원이 전화를 담당 부서로 연결할 때|Let me put you through to the right department.|Hold on, I'll find some guy for you.|Wait, I'll grab whoever's around.|고객 응대에는 put you through가 정중한 표준 표현이에요.
+친구와 잡담하다가 맞장구칠 때|Totally!|I concur with your assessment.|Your statement is accurate.|친구끼리는 짧은 구어 맞장구가 자연스러워요.
+처음 만난 거래처 담당자에게 인사할 때|It's a pleasure to meet you.|Yo, what's up?|Hey, dude!|비즈니스 첫 만남에는 It's a pleasure to meet you.
+친구가 밥을 사 주겠다고 할 때|Aw, thanks! Next one's on me.|I am deeply grateful for your generous offer of a meal.|Your kindness is formally appreciated.|친구 사이엔 가볍게 고마움을 말하고 다음을 약속해요.
+교수님께 이메일로 원고 검토를 부탁할 때|I was wondering if you could take a look at my draft.|Look at my draft.|Can u check my draft?|윗사람에게 부탁할 땐 I was wondering if you could...가 공손해요.
+식당에서 직원에게 계산서를 부탁할 때|Could we get the check, please?|Hey, bill!|Give me the check now.|직원에게도 Could we...? 형태가 예의 있어요.
+친구에게 늦는다고 문자할 때|Running late, be there in 10!|Please be advised that my arrival will be delayed by approximately ten minutes.|I hereby notify you of my delay.|친구 문자에는 짧은 구어가 자연스러워요.
+회사가 고객에게 배송 지연을 공식 사과할 때|We sincerely apologize for the delay.|My bad, guys.|Oops, sorry about that lol.|공식 사과문에는 sincerely apologize를 써요.
+친구에게 약속 시간을 착각한 걸 가볍게 사과할 때|My bad! I thought it was at seven.|We sincerely apologize for any inconvenience this may have caused.|Please accept our formal apology.|친구 사이 가벼운 실수엔 My bad가 자연스러워요.
+상사에게 금요일 휴가를 요청할 때|Would it be possible for me to take Friday off?|I'm taking Friday off.|Friday off, okay?|요청은 Would it be possible...?처럼 허락을 구하는 형태로 해요.
+회의 진행자가 회의를 마무리할 때|Let's wrap up here. Thanks, everyone.|Okay, I'm out. Bye.|We're done, go away.|진행자는 wrap up으로 정리하고 감사 인사를 해요.
+길에서 모르는 사람에게 길을 물을 때|Excuse me, could you tell me how to get to the station?|Hey you, where's the station?|Station. Where?|모르는 사람에게는 Excuse me로 시작해 정중하게 물어요.
+친구의 파티 초대를 아쉽게 거절할 때|I'd love to, but I'm swamped this week.|I must respectfully decline your invitation.|Your request cannot be accommodated.|친구에게는 I'd love to, but...으로 부드럽게 거절해요.
+공식 발표를 시작할 때|Good morning, everyone, and thank you for coming.|Hey guys, what's up?|Yo, let's do this.|공식 발표는 정중한 인사로 시작해요.
+친한 동료에게 잠깐 조언을 구할 때|Can I pick your brain about something?|I hereby request your expert consultation.|Please provide your formal opinion immediately.|친한 사이엔 pick your brain이 자연스러워요.
+업무 이메일에서 계약서를 첨부했다고 알릴 때|Please find the contract attached.|Here's the thing, check it out.|Contract. Look.|업무 메일에서는 Please find ... attached가 표준 표현이에요.
+친구가 시험에 합격했다는 소식을 전할 때|Good for you! That's awesome!|Your achievement has been duly noted.|Congratulations on your successful completion of the examination process.|친구의 좋은 소식엔 따뜻한 구어 반응이 어울려요.
+상사에게 자신의 실수를 보고할 때|I apologize. That was my oversight, and I'll fix it right away.|Oops, my bad lol.|Whatever, it happens.|윗사람에게는 책임을 인정하고 해결책을 함께 말해요.
+화난 고객의 전화에 응대할 때|I'm sorry to hear that. Let me look into it for you.|Not my problem.|Calm down, okay?|고객에게는 공감 후 해결하겠다는 말을 해요.
+면접관에게 질문할 기회를 얻었을 때|Could you tell me more about the team I'd be working with?|So, what's the deal with the team?|Tell me about the team.|면접에서는 Could you tell me more...?로 정중하게 물어요.`;
 /*CONV-END*/
 
 /*PARSER-START*/
@@ -1018,6 +1191,8 @@ function parseConv(raw){
     cat.items.push(it);items.push(it)});
   return {cats,items};
 }
+function parseErr(raw){return raw.split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{const f=l.split("|").map(s=>s.trim());return {wrong:f[0],right:f[1],why:f[2],nf:f.length}})}
+function parseFormal(raw){return raw.split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{const f=l.split("|").map(s=>s.trim());return {sit:f[0],ok:f[1],bad:[f[2],f[3]].filter(Boolean),why:f[4],nf:f.length}})}
 /* ---------- 단어 목록 구성 ---------- */
 function buildWords(book,KO,ALIAS){
   const KEYS=[...Object.keys(KO),...Object.keys(ALIAS)];
@@ -1066,7 +1241,7 @@ function findExamples(book,words){
    ========================================================================== */
 const {KO,ALIAS}=loadKO(KO_RAW);
 const LS="storyvoca_v1";
-const DEF_ST=()=>({p:{},wrong:{},days:[],goal:10,today:{d:"",n:0},xp:0,scope:"all",set:{sfx:true,vol:.6,tts:true,auto:true,rate:.9,voice:"",gender:"f",vib:true,theme:"auto"},custom:[],lastBook:""});
+const DEF_ST=()=>({p:{},wrong:{},days:[],goal:10,today:{d:"",n:0},xp:0,scope:"all",set:{sfx:true,vol:.6,tts:true,auto:true,rate:.9,voice:"",gender:"f",vib:true,theme:"auto",qmode:"mix",qtypes:[],qlevel:"normal"},custom:[],lastBook:"",qs:{}});
 let st=(()=>{try{const s=JSON.parse(localStorage.getItem(LS)||"null");if(s){const d=DEF_ST();return {...d,...s,set:{...d.set,...(s.set||{})},today:s.today||d.today}}}catch(e){}return DEF_ST()})();
 /* 실용 회화 진도는 별도 키에 분리 저장 (교재 모드와 충돌 없음) */
 const LSC="storyvoca_conv_v1";
@@ -1350,6 +1525,14 @@ function scrStories(){
 let SES=null;
 function startSession(sc,mode){
   rollToday();
+  if(mode==="normal"&&st.set.qmode==="type"){   // 유형별 연습: 학습한 표현으로 선택 유형만
+    const pr=(st.set.qtypes||[]).filter(t=>QT[t]&&QT[t].m.includes(MODE==="conv"?"c":"b"));
+    if(!pr.length){toast("설정에서 연습할 유형을 골라 주세요");return go("settings")}
+    const words=shuffle(scopeWords(sc).filter(w=>!isNew(w))).slice(0,10);
+    SES={sc,mode:"practice",fresh:[],due:words,practice:pr,ci:0,wrongSet:new Set(),correct:0,total:0,combo:0,best:0,xp0:st.xp,lv0:level(st.xp)};
+    planQueue();if(!SES.queue.length){SES=null;toast("이 유형은 학습한 표현이 있어야 해요. 먼저 혼합 학습을 해 주세요");return}
+    SFX.play("flip");return nextQ();
+  }
   const pool=scopeWords(sc);let fresh=[],due=[];
   if(mode==="wrong"){due=allWords().filter(w=>D.wrong[w.id])}
   else{
@@ -1432,12 +1615,7 @@ function quizTypes(w,first){
   return shuffle(t)[0];
 }
 function buildQuiz(){
-  const q=[];
-  SES.fresh.forEach(w=>q.push({w,t:"en2ko"}));
-  const second=SES.fresh.map(w=>({w,t:quizTypes(w).replace(/^en2ko$/,w.ex.length?"cloze":"ko2en")}));
-  const rev=SES.due.map(w=>({w,t:quizTypes(w)}));
-  SES.queue=[...shuffle(q),...shuffle([...second,...rev])];SES.total=SES.queue.length;SES.done=0;SES.seen=new Set();
-  ask();
+  planQueue();ask();   // 혼합 학습 플래너 (유형 확장)
 }
 function distract(w,field,n=3){
   const A=allWords().filter(x=>x.id!==w.id&&x[field]&&x[field]!==w[field]&&(field!=="ko"||x.ko.split(",")[0]!==w.ko.split(",")[0]));
@@ -1447,6 +1625,7 @@ function distract(w,field,n=3){
 }
 function ask(){
   if(!SES.queue.length)return finish();
+  if(NEWQ[SES.queue[0].t])return NEWQ[SES.queue[0].t](SES.queue[0]);
   const item=SES.queue[0],{w,t}=item;let type=t;
   if(type==="cloze"&&!w.ex.length)type="ko2en";
   if(type==="listen"&&!(st.set.tts&&TTS.ok()))type="ko2en";
@@ -1474,7 +1653,7 @@ function ask(){
   const sayq=$("#sayq");if(sayq)sayq.onclick=()=>TTS.word(w.disp,true);
   if(type==="en2ko"&&st.set.auto)setTimeout(()=>TTS.word(w.disp),200);
   let answered=false;
-  const resolve=(ok,given)=>{if(answered)return;answered=true;
+  const resolve=(ok,given)=>{if(answered)return;answered=true;qstat(type==="ko2en_fallback"?"ko2en":type,ok);
     SES.done++;$("#sbar").style.width=(SES.done/SES.total*100)+"%";
     item.tries=(item.tries||0)+1;
     if(ok){SES.correct++;SES.combo++;SES.best=Math.max(SES.best,SES.combo);const gain=10+Math.min(SES.combo,10);st.xp+=gain;
@@ -1484,7 +1663,7 @@ function ask(){
       $(".qcard")?.classList.add("green-flash");
       SES.queue.shift();
     }else{SES.combo=0;$("#combo").textContent="";SES.wrongSet.add(w.id);SFX.play("no");buzz([30,40,30]);$(".qcard")?.classList.add("shake");
-      SES.queue.shift();const back={w,t:type==="ko2en_fallback"?"ko2en":type,tries:item.tries};SES.queue.splice(Math.min(3,SES.queue.length),0,back);SES.total++;}
+      SES.queue.shift();requeue(w,type==="ko2en_fallback"?"ko2en":type);}
     if(type!=="en2ko")TTS.word(w.disp);
     const sh=$("#sheet");sh.className="sheet show "+(ok?"ok":"no");
     sh.innerHTML=`<div class="ttl">${ic(ok?"check":"x")} ${ok?(SES.combo>=3?`정답! ${SES.combo}연속`:"정답!"):"아쉬워요"}</div>
@@ -1630,6 +1809,7 @@ function scrSettings(){
   const sw=(id,on,label,sub)=>`<div class="set"><div class="grow"><b>${label}</b>${sub?`<span class="mute">${sub}</span>`:""}</div><label class="sw"><input type="checkbox" id="${id}" ${on?"checked":""} aria-label="${label}"><span></span></label></div>`;
   view(`<div class="top"><h1>설정</h1></div>
   <div class="card"><h3>${ic("target")} 하루 목표</h3><div class="seg" role="radiogroup" aria-label="하루 새 단어 수">${[5,10,15,20].map(n=>`<button role="radio" aria-checked="${D.goal===n}" class="${D.goal===n?"on":""}" data-g="${n}">${n}개</button>`).join("")}</div></div>
+  ${quizSettingsHTML()}
   <div class="card"><h3>${ic("vol")} 소리</h3>
     ${sw("sfx",st.set.sfx,"효과음","정답·오답·콤보·완료 사운드")}
     <div class="set"><div class="grow"><b>효과음 음량</b><input type="range" id="vol" min="0" max="1" step="0.05" value="${st.set.vol}" aria-label="효과음 음량"></div></div>
@@ -1654,6 +1834,7 @@ function scrSettings(){
   <div class="card"><h3>${ic("file")} 교재 모드</h3><div class="sub">${BOOK?`현재: ${esc(st.lastBook||"-")} · 이야기 ${BOOK.stories.length}편 · 단어 ${WORDS.length}개${PARSE_STAT?` · 글로서리 ${PARSE_STAT.glossary}항목`:""}`:"PDF를 아직 선택하지 않았어요 (실용 회화는 PDF 없이 학습)"}</div>
     <div class="btns"><button class="btn alt sm" id="repick">${ic("refresh")} PDF 다시 선택</button><button class="btn alt sm" id="reset" style="color:var(--no)">${ic("trash")} 진도 초기화</button></div></div>
   <p class="mute" style="text-align:center">교재 본문은 저장하지 않아요 · 단어 뜻은 앱 내장 사전, 없는 단어는 네이버 사전 연결</p>`);
+  bindQuizSettings();
   const bindSw=(id,k,after)=>{$("#"+id).onchange=e=>{st.set[k]=e.target.checked;save();SFX.play("tick");after&&after()}};
   bindSw("sfx","sfx");bindSw("tts","tts");bindSw("auto","auto");bindSw("vib","vib",()=>buzz(20));
   $("#vol").oninput=e=>{st.set.vol=+e.target.value;save()};$("#vol").onchange=()=>SFX.play("ok");
@@ -1772,16 +1953,14 @@ function convCard(dir=0){
 /* ---------- 회화 퀴즈 5종 ---------- */
 function convTypes(it){const t=["sit"];if(it.ex.some(e=>e.a>=0))t.push("cloze");if(st.set.tts)t.push("dict");if(orderEx(it))t.push("order");if(SRC)t.push("speak");return t}
 function convBuildQuiz(){
-  const q1=SES.fresh.map(it=>({w:it,t:"sit"}));
-  const q2=SES.fresh.map(it=>{const t=convTypes(it).filter(x=>x!=="sit");return {w:it,t:t.length?shuffle(t)[0]:"sit"}});
-  const rev=SES.due.map(it=>({w:it,t:shuffle(convTypes(it))[0]}));
-  SES.queue=[...shuffle(q1),...shuffle([...q2,...rev])];SES.total=SES.queue.length;SES.done=0;convAsk();
+  planQueue();convAsk();
 }
 function convDistract(it,n=3){const same=shuffle(CITEMS.filter(x=>x.si===it.si&&x.id!==it.id)),other=shuffle(CITEMS.filter(x=>x.si!==it.si));
   const out=[],seen=new Set([it.disp]);for(const x of [...same,...other]){if(!seen.has(x.disp)){seen.add(x.disp);out.push(x.disp)}if(out.length>=n)break}return out}
 const QLABEL={sit:["target","상황에 맞는 표현 고르기"],cloze:["layers","예문 빈칸 채우기"],dict:["ear","듣고 받아쓰기"],order:["list","어순 배열하기"],speak:["vol","한국어 보고 영어로 말하기"]};
 function convAsk(){
   if(!SES.queue.length)return finish();
+  if(NEWQ[SES.queue[0].t])return NEWQ[SES.queue[0].t](SES.queue[0]);
   const item=SES.queue[0],{w}=item;let type=item.t;
   if(type==="cloze"&&!w.ex.some(e=>e.a>=0))type="sit";
   if(type==="order"&&!orderEx(w))type="sit";
@@ -1809,13 +1988,13 @@ function convAsk(){
   view(head+kick+body+(opts.length?`<div class="opts" role="group" aria-label="보기">${opts.map((o,i)=>`<button class="opt en" data-i="${i}"><span class="k">${i+1}</span><span>${esc(o)}</span></button>`).join("")}</div>`:"")+`<div class="sheet" id="sheet" role="status" aria-live="assertive"></div>`,{session:true});
   bindQuit();if(SES.combo>=2)$("#combo").textContent="×"+SES.combo;
   let answered=false;
-  const resolve=(ok,given)=>{if(answered)return;answered=true;SES.done++;$("#sbar").style.width=(SES.done/SES.total*100)+"%";
+  const resolve=(ok,given)=>{if(answered)return;answered=true;qstat(type==="ko2en_fallback"?"ko2en":type,ok);SES.done++;$("#sbar").style.width=(SES.done/SES.total*100)+"%";
     if(ok){SES.correct++;SES.combo++;SES.best=Math.max(SES.best,SES.combo);st.xp+=10+Math.min(SES.combo,10);SFX.play("ok");if(SES.combo>=3){const cb=SES.combo;setTimeout(()=>SFX.play("combo",cb),260)};buzz(15);
       const c=$("#combo");c.textContent=SES.combo>=2?"×"+SES.combo:"";c.classList.remove("bump");void c.offsetWidth;c.classList.add("bump");
       const tgt=document.querySelector(".opt.ok,.spell,.answer-area")||$(".qcard");if(tgt){const r=tgt.getBoundingClientRect();FX.burst(r.left+r.width/2,r.top+r.height/2,SES.combo>=5?34:18,.8)}
       $(".qcard")?.classList.add("green-flash");SES.queue.shift();}
     else{SES.combo=0;$("#combo").textContent="";SES.wrongSet.add(w.id);SFX.play("no");buzz([30,40,30]);$(".qcard")?.classList.add("shake");
-      SES.queue.shift();SES.queue.splice(Math.min(3,SES.queue.length),0,{w,t:type});SES.total++;}
+      SES.queue.shift();requeue(w,type);}
     const sh=$("#sheet");sh.className="sheet show "+(ok?"ok":"no");const shown=ex||w.ex[0];
     sh.innerHTML=`<div class="ttl">${ic(ok?"check":"x")} ${ok?(SES.combo>=3?`정답! ${SES.combo}연속`:"정답!"):"아쉬워요"}</div>
       <div style="margin:6px 0 2px"><b class="en" style="font-size:18px">${esc(w.disp)}</b> <span class="sub">${esc(w.ko)}</span></div>
@@ -1871,6 +2050,246 @@ function convSheet(w){
   sh.querySelectorAll("[data-dlg]").forEach(b=>b.onclick=()=>playDialog(w));
   const ww=sh.querySelector("#wsw");if(ww)ww.onclick=()=>{delete D.wrong[w.id];save();close();toast("오답노트에서 뺐어요");go(TAB)};
   sh.querySelector("#wsx").focus();
+}
+
+/* ==========================================================================
+   문제 유형 확장 — 혼합 학습 플래너 + 새 유형 렌더러
+   cls: 0 보기형(쉬움) · 1 중간 · 2 주관식·청해(어려움)   m: c=회화, b=교재
+   ========================================================================== */
+const ERRS=parseErr(ERR_RAW),FORMALS=parseFormal(FORMAL_RAW);
+[...ERRS.map(e=>e.right),...FORMALS.map(f=>f.ok)].forEach(t=>{if(!PH.has(t))PH.set(t,new Set());PH.get(t).add("f");PH.get(t).add("m")});
+const QT={
+  sit:{m:"c",cls:0,name:"상황→표현",ic:"target"},trans:{m:"c",cls:0,name:"번역 고르기",ic:"book"},dlg:{m:"c",cls:0,name:"대화 완성",ic:"note"},
+  formal:{m:"c",cls:0,name:"격식·뉘앙스 판별",ic:"star"},match:{m:"cb",cls:0,name:"짝 맞추기",ic:"layers"},
+  en2ko:{m:"b",cls:0,name:"영→한 뜻 고르기",ic:"book"},ko2en:{m:"b",cls:0,name:"한→영 단어 고르기",ic:"pen"},
+  cloze:{m:"cb",cls:1,name:"빈칸 채우기(보기)",ic:"layers"},multi:{m:"c",cls:1,name:"다중 빈칸",ic:"list"},order:{m:"c",cls:1,name:"어순 배열",ic:"list"},
+  ldlg:{m:"c",cls:1,name:"듣고 응답 고르기",ic:"ear"},err:{m:"c",cls:1,name:"어색한 문장 찾기",ic:"x"},shadow:{m:"c",cls:1,name:"따라 말하기",ic:"vol"},
+  typed:{m:"cb",cls:2,name:"주관식 빈칸",ic:"pen"},dict:{m:"c",cls:2,name:"받아쓰기",ic:"ear"},speak:{m:"c",cls:2,name:"한→영 말하기",ic:"vol"},listen:{m:"b",cls:2,name:"듣고 철자 쓰기",ic:"ear"},
+};
+const modeTypes=()=>Object.keys(QT).filter(t=>QT[t].m.includes(MODE==="conv"?"c":"b")&&(t!=="speak"||SRC));
+const qkey=t=>(MODE==="conv"?"c:":"b:")+t;
+function qstat(t,ok){if(!st.qs)st.qs={};const s=st.qs[qkey(t)]||(st.qs[qkey(t)]={n:0,ok:0});s.n++;if(ok)s.ok++}
+// 표현 자체의 단어인지(자리표시 someone/something 등에 들어간 단어는 제외) — 앞 3글자로 활용형까지 허용
+const exprToks=w=>nrm(w.disp).split(/\s+/).map(t=>t.replace(/[^a-z'-]/g,"")).filter(t=>t.length>=2&&!/^(someone|something|somebody|one's|someone's|your|you)$/.test(t));
+const inExpr=(w,t)=>{const x=nrm(t);return exprToks(w).some(e=>e.slice(0,3)===x.slice(0,3)&&!STOPW.has(e))};
+const STOPW=new Set("a an the to of in on for with it i you me my your is are was be and or at up out off by i'm it's that this what can do don't not".split(" "));
+function typedSpec(w){
+  if(w.conv){for(const e of shuffle(w.ex.filter(e=>e.a>=0))){const span=e.en.slice(e.a,e.b);let best=null;
+      for(const m of span.matchAll(/[A-Za-z][A-Za-z'’-]*/g)){const t=m[0];if(t.length<3||STOPW.has(nrm(t))||!inExpr(w,t))continue;if(!best||t.length>best.t.length)best={t,s:e.a+m.index}}
+      if(best)return {text:e.en,ko:e.ko,s:best.s,t:best.t}}return null}
+  const e=shuffle((w.ex||[]).filter(e=>/^[A-Za-z][A-Za-z'’-]*$/.test(e.s.slice(e.a,e.b))))[0];
+  return e?{text:e.s,ko:"",s:e.a,t:e.s.slice(e.a,e.b),src:e}:null;
+}
+function multiSpec(it){
+  const lines=[];if(it.dlg){lines.push({text:it.dlg[0],who:"A"});lines.push({text:it.dlg[1],who:"B",ctx:it.dlg[0]})}it.ex.forEach(e=>lines.push({text:e.en,ko:e.ko}));
+  for(const L of lines){const m=it.re.exec(nrm(L.text));if(!m)continue;const a=m.index,b=a+m[1].length;
+    const toks=[...L.text.matchAll(/[A-Za-z][A-Za-z'’-]*/g)].map(x=>({t:x[0],s:x.index,in:x.index>=a&&x.index<b}));
+    let bl=toks.filter(x=>x.in&&x.t.length>=2&&!/^(a|an|the)$/i.test(x.t)&&inExpr(it,x.t));
+    if(bl.length>3)bl=bl.sort((x,y)=>y.t.length-x.t.length).slice(0,3);
+    if(bl.length<2){const o=toks.filter(x=>!x.in&&x.t.length>=4).sort((x,y)=>y.t.length-x.t.length)[0];if(o)bl=[...bl,o]}
+    if(bl.length>=2)return {...L,bl:bl.sort((x,y)=>x.s-y.s)}}
+  return null;
+}
+// 오답 보기에서 제외: 어떤 질문에도 그럴듯한 범용 응답(수락·거절·보류·사과·안심·맞장구·되묻기)
+const GENERIC=/^(sure|okay|ok|yes|yeah|no|nope|nah|not|thanks|thank|deal|who|what|great|wow|really|of course|me too|me neither|definitely|absolutely|hi|hello|aw|ugh|ha|oh|none|once|is this|let me|let's|hold on|sorry|i'm sorry|i'll|i'd|i'm afraid|probably|maybe|depends|it depends|don't worry|no worries|no problem|that's|it's fine|go ahead|i know|i hear you|fair enough|honestly|then|just|actually|i can't|i don't|you have|you should|try|i'm sure|i'm torn|i'm on the fence|i take your point|i see|to be fair|will we|you can't argue|i'm with you|i couldn't agree|hmm|point taken|with all due respect|to play devil|that remains|you've hit|looking forward|i'm not comfortable|this is very last-minute)\b/i;
+let DLG_POOL=null;
+const dlgPool=()=>DLG_POOL||(DLG_POOL=CITEMS.filter(i=>i.dlg&&i.dlg[1].split(/\s+/).length>=4&&!GENERIC.test(i.dlg[1])));
+function dlgOpts(it){const o=shuffle(dlgPool().filter(x=>x.si!==it.si&&x.dlg[1]!==it.dlg[1])).slice(0,3).map(x=>x.dlg[1]);return shuffle([it.dlg[1],...o])}
+function availTypes(w){
+  let t;
+  if(w.conv){t=["sit","trans"];if(w.dlg){t.push("dlg");if(st.set.tts)t.push("ldlg")}
+    if(w.ex.some(e=>e.a>=0)){t.push("cloze");if(typedSpec(w))t.push("typed")}
+    if(multiSpec(w))t.push("multi");if(orderEx(w))t.push("order");if(st.set.tts)t.push("dict","shadow");if(SRC)t.push("speak");}
+  else{t=["en2ko"];if(w.ko)t.push("ko2en");if(w.ex&&w.ex.length){t.push("cloze");if(typedSpec(w))t.push("typed")}
+    if(st.set.tts&&TTS.ok()&&/^[a-z][a-z'-]{1,13}$/.test(nrm(w.disp)))t.push("listen");if(!w.ko)t=t.filter(x=>x!=="en2ko");}
+  return t;
+}
+function pickType(w,{first=false,fresh=false,exclude=[]}={}){
+  let av=availTypes(w).filter(t=>!exclude.includes(t));
+  if(SES&&SES.practice){const p=av.filter(t=>SES.practice.includes(t));return p.length?shuffle(p)[0]:null}
+  if(!av.length)return availTypes(w)[0]||"sit";
+  if(first){const e=av.filter(t=>QT[t].cls===0);if(e.length)av=e}     // 첫 학습은 보기형
+  const b=P(w.id)?.b||0,L=st.set.qlevel;
+  const wt=t=>{const c=QT[t].cls;let x=c===0?(fresh?1:Math.max(.25,1-.15*b)):c===1?1:(fresh?.3:.3+.25*b);  // 복습 단계↑ → 어려운 유형↑
+    if(L==="easy")x*=c===2?.4:c===0?1.4:1;if(L==="hard")x*=c===2?2:c===0?.6:1;
+    const s=st.qs&&st.qs[qkey(t)];if(s&&s.n>=5&&s.ok/s.n<.7)x*=1.6;   // 약한 유형(정답률 70% 미만, 5회 이상) 비중↑
+    return x};
+  const ws=av.map(wt),sum=ws.reduce((a,c)=>a+c,0);let r=Math.random()*sum;
+  for(let i=0;i<av.length;i++){r-=ws[i];if(r<=0)return av[i]}return av[av.length-1];
+}
+function matchSet(pool){const out=[],ds=new Set(),ks=new Set();
+  const add=w=>{if(out.length>=6||!w||!w.ko||ds.has(w.disp)||ks.has(w.ko))return;ds.add(w.disp);ks.add(w.ko);out.push(w)};
+  shuffle(pool).forEach(add);if(out.length<6)shuffle(allWords().filter(w=>!isNew(w))).forEach(add);if(out.length<6)shuffle(scopeWords(D.scope)).forEach(add);return out}
+function noConsec(q){for(let pass=0;pass<3;pass++)for(let i=1;i<q.length;i++){if(q[i].t!==q[i-1].t)continue;
+    let j=i+1;while(j<q.length&&(q[j].t===q[i-1].t||(q[i+1]&&j===i+1&&false)))j++;
+    if(j<q.length)[q[i],q[j]]=[q[j],q[i]];else if(q[i].w){const t=pickType(q[i].w,{exclude:[q[i-1].t]});if(t&&t!==q[i-1].t)q[i].t=t}}return q}
+function insertBonus(q,item){q.splice(Math.max(1,Math.floor(q.length*(.3+Math.random()*.6))),0,item)}
+function planQueue(){
+  const conv=MODE==="conv",pr=SES.practice;let q=[];
+  if(!pr){
+    const first=SES.fresh.map(w=>({w,t:pickType(w,{first:true,fresh:true})}));
+    const rest=[...first.map(f=>({w:f.w,t:pickType(f.w,{fresh:true,exclude:[f.t]})})),...SES.due.map(w=>({w,t:pickType(w)}))];
+    q=[...shuffle(first),...shuffle(rest)];
+    const pool=[...SES.fresh,...SES.due];
+    if(pool.length>=3)insertBonus(q,{t:"match",w:null,set:matchSet(pool)});
+    if(conv){insertBonus(q,{t:"err",w:null,e:shuffle(ERRS)[0]});if(Math.random()<.6)insertBonus(q,{t:"formal",w:null,f:shuffle(FORMALS)[0]})}
+  }else{
+    const words=SES.due;words.forEach(w=>{const t=pickType(w);if(t)q.push({w,t})});
+    if(pr.includes("match")&&words.length>=3){q.push({t:"match",w:null,set:matchSet(words)});if(words.length>=8)q.push({t:"match",w:null,set:matchSet(shuffle(words).slice(0,6))})}
+    if(conv&&pr.includes("err"))shuffle(ERRS).slice(0,6).forEach(e=>q.push({t:"err",w:null,e}));
+    if(conv&&pr.includes("formal"))shuffle(FORMALS).slice(0,5).forEach(f=>q.push({t:"formal",w:null,f}));
+    q=shuffle(q);
+  }
+  SES.queue=noConsec(q);SES.total=SES.queue.length;SES.done=0;
+}
+function requeue(w,t){if(!w)return;const q=SES.queue,pos=Math.min(3,q.length);let tt=t;const nb=[q[pos-1]?.t,q[pos]?.t];
+  if(nb.includes(tt)){const alt=availTypes(w).filter(x=>!nb.includes(x));if(alt.length)tt=shuffle(alt)[0]}q.splice(pos,0,{w,t:tt});SES.total++}
+const nextQ=()=>MODE==="conv"?convAsk():ask();
+const sayW=w=>w&&(w.conv?TTS.phrase(w.disp):TTS.word(w.disp));
+
+/* ---------- 공통 화면·채점 ---------- */
+function qview(item,body,opts=null,optCls=""){
+  const k=QT[item.t];
+  view(sessTop(SES.done/SES.total*100,"퀴즈 진행")+`<div class="kicker">${ic(k.ic)} ${k.name}</div>`+body+
+    (opts?`<div class="opts" role="group" aria-label="보기">${opts.map((o,i)=>`<button class="opt ${optCls}" data-i="${i}"><span class="k">${i+1}</span><span>${esc(o)}</span></button>`).join("")}</div>`:"")+
+    `<div class="sheet" id="sheet" role="status" aria-live="assertive"></div>`,{session:true});
+  bindQuit();if(SES.combo>=2)$("#combo").textContent="×"+SES.combo;SES._ans=false;
+}
+function bindOpts(item,opts,correct,reveal,extra={}){
+  const bs=$$(".opt");
+  const pick=i=>{if(SES._ans)return;const ok=opts[i]===correct;
+    bs.forEach((c,j)=>{c.disabled=true;if(opts[j]===correct)c.classList.add("ok");else if(j!==i)c.classList.add("dim")});if(!ok)bs[i].classList.add("no");
+    settle(item,ok,{reveal:reveal(ok,opts[i]),...extra})};
+  bs.forEach((b,i)=>b.onclick=()=>pick(i));
+  KEY=ev=>{const n=+ev.key;if(n>=1&&n<=opts.length&&!SES._ans){ev.preventDefault();pick(n-1)}};
+}
+function settle(item,ok,o={}){
+  if(SES._ans)return;SES._ans=true;const w=item.w;
+  SES.done++;$("#sbar").style.width=(SES.done/SES.total*100)+"%";qstat(item.t,ok);
+  if(ok){SES.correct++;SES.combo++;SES.best=Math.max(SES.best,SES.combo);st.xp+=Math.max(2,Math.round((10+Math.min(SES.combo,10))*(o.xpMul??1)));
+    SFX.play("ok");if(SES.combo>=3){const cb=SES.combo;setTimeout(()=>SFX.play("combo",cb),260)}buzz(15);
+    const c=$("#combo");c.textContent=SES.combo>=2?"×"+SES.combo:"";c.classList.remove("bump");void c.offsetWidth;c.classList.add("bump");
+    const tgt=document.querySelector(".opt.ok,.spell.ok,.answer-area.ok,.mgrid")||$(".qcard");if(tgt){const r=tgt.getBoundingClientRect();FX.burst(r.left+r.width/2,r.top+Math.min(r.height/2,180),SES.combo>=5?34:18,.8)}
+    $(".qcard")?.classList.add("green-flash");SES.queue.shift();}
+  else{SES.combo=0;$("#combo").textContent="";if(w)SES.wrongSet.add(w.id);SFX.play("no");buzz([30,40,30]);$(".qcard")?.classList.add("shake");
+    SES.queue.shift();if(w&&!o.noRequeue)requeue(w,item.t);}
+  const sh=$("#sheet");sh.className="sheet show "+(ok?"ok":"no");
+  sh.innerHTML=`<div class="ttl">${ic(ok?"check":"x")} ${ok?(SES.combo>=3?`정답! ${SES.combo}연속`:"정답!"):"아쉬워요"}</div>
+    ${w?`<div style="margin:6px 0 2px"><b class="en" style="font-size:18px">${esc(w.disp)}</b> <span class="sub">${esc(w.ko||"")}</span></div>`:""}${o.reveal||""}
+    ${!ok&&w&&!o.noRequeue?`<div class="mute" style="margin-top:6px">이 표현은 조금 뒤에 다시 나와요</div>`:""}
+    <button class="btn ${ok?"ok":"no"}" id="cont" style="margin-top:12px">계속 <span class="mute" style="color:inherit;opacity:.7;font-weight:600">(Enter)</span></button>`;
+  if(o.say)o.say();
+  $("#cont").onclick=()=>{SFX.play("tick");nextQ()};$("#cont").focus({preventScroll:true});
+  if(ok&&!RM)SES._t=setTimeout(()=>{if(SES&&$("#cont"))nextQ()},2600);
+  KEY=ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();if(!SES)return;clearTimeout(SES._t);nextQ()}};
+}
+const sub2=t=>`<span class="src" style="font-size:14px;color:var(--sub)">${esc(t)}</span>`;
+const fallbackQ=item=>{item.t=item.w?(item.w.conv?"sit":"en2ko"):"err";if(!item.w&&!item.e)item.e=shuffle(ERRS)[0];return nextQ()};
+
+/* ---------- 새 유형 렌더러 ---------- */
+const NEWQ={
+  dlg(item){const it=item.w;if(!it||!it.dlg)return fallbackQ(item);const opts=dlgOpts(it);
+    qview(item,`<div class="qcard" style="margin-top:10px;text-align:left"><div class="mute">A의 말에 이어질 B의 알맞은 대답은?</div>
+      <div class="bubble a" style="margin-top:8px"><b>A</b> ${esc(it.dlg[0])}</div><div class="bubble b" style="opacity:.55"><b>B</b> …</div></div>`,opts,"en trans");
+    bindOpts(item,opts,it.dlg[1],()=>`<div class="ex"><div class="bubble a"><b>A</b> ${esc(it.dlg[0])}</div><div class="bubble b"><b>B</b> ${esc(it.dlg[1])}</div></div>`,{say:()=>playDialog(it)})},
+  ldlg(item){const it=item.w;if(!it||!it.dlg)return fallbackQ(item);const opts=dlgOpts(it),play=()=>TTS.phrase(it.dlg[0],{g:"f",force:true});
+    qview(item,`<div class="qcard" style="margin-top:10px"><div class="mute">A의 말을 듣고(글자 없이) B의 알맞은 대답을 고르세요</div>
+      <button class="big-play" id="pa" aria-label="A의 말 듣기">${ic("ear")}</button><div class="sub">여러 번 들어도 돼요</div></div>`,opts,"en trans");
+    $("#pa").onclick=play;setTimeout(play,300);
+    bindOpts(item,opts,it.dlg[1],()=>`<div class="ex"><div class="bubble a"><b>A</b> ${esc(it.dlg[0])}</div><div class="bubble b"><b>B</b> ${esc(it.dlg[1])}</div></div>`,{say:()=>TTS.phrase(it.dlg[1],{g:"m"})})},
+  trans(item){const it=item.w,e=it.ex[Math.random()*2|0];
+    const others=shuffle(CITEMS.filter(x=>x.id!==it.id&&x.si===it.si)).slice(0,3).map(x=>x.ex[Math.random()*2|0].en);const opts=shuffle([e.en,...others]);
+    qview(item,`<div class="qcard" style="margin-top:10px"><div class="mute">이 한국어 문장에 맞는 영어 문장은?</div><div class="mean" style="font-size:20px;margin-top:6px">${esc(e.ko)}</div></div>`,opts,"en trans");
+    bindOpts(item,opts,e.en,()=>`<div class="ex">${hl(e)}${sub2(e.ko)}</div>`,{say:()=>TTS.phrase(e.en)})},
+  typed(item){const w=item.w,sp=w&&typedSpec(w);if(!sp)return fallbackQ(item);
+    SES._key=sp.t;const base=st.set.qlevel==="easy"?2:0;let hint=base;const L=[...sp.t].length;
+    const hintHTML=()=>hint===0?"":hint===1?`첫 글자: <b class="en">${esc(sp.t[0])}</b>`:`<b class="en" style="letter-spacing:3px">${esc(sp.t[0])}${"_".repeat(L-1)}</b> (${L}글자)`;
+    qview(item,`<div class="qcard" style="margin-top:10px;text-align:left"><div class="ex" style="margin-top:0">${esc(sp.text.slice(0,sp.s))}<span class="blank" aria-label="빈칸"></span>${esc(sp.text.slice(sp.s+sp.t.length))}</div>
+      <div class="mute" style="margin-top:8px">${sp.ko?esc(sp.ko)+" · ":""}뜻: ${esc(w.ko||"")}</div>
+      <div class="mute" style="margin-top:4px">문장에 맞는 형태 그대로 입력하세요 (예: drop → dropped) · 대소문자 무시</div>
+      <div id="hint" class="sub" style="margin-top:8px;min-height:22px">${hintHTML()}</div>
+      <input class="spell" id="spell" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="빈칸에 들어갈 단어 입력" placeholder="빈칸에 들어갈 단어">
+      <div class="btns"><button class="btn alt sm" id="hb">${ic("info")} 힌트 (점수↓)</button><button class="btn sm" id="chk">확인</button></div></div>`);
+    const inp=$("#spell");setTimeout(()=>inp.focus(),200);
+    $("#hb").onclick=()=>{if(hint<2){hint++;$("#hint").innerHTML=hintHTML();SFX.play("tick")}if(hint>=2)$("#hb").disabled=true;inp.focus()};if(hint>=2)$("#hb").disabled=true;
+    const chk=()=>{if(SES._ans)return;const v=inp.value.trim();if(!v){inp.classList.add("shake");setTimeout(()=>inp.classList.remove("shake"),400);return}
+      const ok=nrm(v).replace(/[.,!?]+$/,"")===nrm(sp.t);inp.classList.add(ok?"ok":"no");inp.disabled=true;
+      settle(item,ok,{xpMul:[1,.7,.4][hint-base]??.4,reveal:`${!ok?`<div class="sub">내 답: <span class="en">${esc(v)}</span> · 정답: <b class="en">${esc(sp.t)}</b></div>`:""}<div class="ex">${esc(sp.text.slice(0,sp.s))}<mark>${esc(sp.t)}</mark>${esc(sp.text.slice(sp.s+sp.t.length))}</div>`,say:()=>w.conv?TTS.phrase(sp.text):TTS.word(w.disp)})};
+    $("#chk").onclick=chk;inp.onkeydown=ev=>{if(ev.key==="Enter"){ev.preventDefault();ev.stopPropagation();chk()}}},
+  multi(item){const it=item.w,sp=it&&it.conv&&multiSpec(it);if(!sp)return fallbackQ(item);
+    const bl=sp.bl,lower=new Set(bl.map(b=>b.t.toLowerCase()));SES._key=bl.map(b=>b.t);
+    const dist=shuffle(CITEMS.filter(x=>x.id!==it.id).flatMap(x=>x.disp.split(/\s+/)).filter(t=>/^[A-Za-z]{3,}$/.test(t)&&!lower.has(t.toLowerCase())&&!/^(someone|something)$/i.test(t)));
+    const bank=shuffle([...bl.map((b,k)=>({t:b.t,k})),...[...new Set(dist)].slice(0,2).map(t=>({t,k:-1}))]);const fill=bl.map(()=>null);
+    const lineHTML=(reveal=false)=>{let h="",p=0;bl.forEach((b,k)=>{h+=esc(sp.text.slice(p,b.s));h+=reveal?`<mark>${esc(b.t)}</mark>`:`<button class="slot ${fill[k]!=null?"filled":""}" data-s="${k}" aria-label="빈칸 ${k+1}">${fill[k]!=null?esc(bank[fill[k]].t):(k+1)}</button>`;p=b.s+b.t.length});return h+esc(sp.text.slice(p))};
+    qview(item,`<div class="qcard" style="margin-top:10px;text-align:left"><div class="mute">단어 뱅크에서 골라 빈칸 ${bl.length}개를 채우세요</div>
+      ${sp.ctx?`<div class="bubble a" style="margin-top:8px"><b>A</b> ${esc(sp.ctx)}</div>`:""}
+      <div id="line" class="${sp.who?"bubble "+(sp.who==="B"?"b":"a"):"ex"}" style="line-height:2.2">${sp.who?`<b>${sp.who}</b> `:""}<span></span></div>${sp.ko?`<div class="mute" style="margin-top:6px">${esc(sp.ko)}</div>`:""}
+      <div class="tiles" id="bank" style="margin-top:12px"></div><div class="btns"><button class="btn alt sm" id="clr">${ic("refresh")} 다시</button><button class="btn sm" id="chk" disabled>확인</button></div></div>`);
+    const draw=()=>{$("#line span").innerHTML=lineHTML();$("#bank").innerHTML=bank.map((b,i)=>fill.includes(i)?`<span class="tile ghost en" aria-hidden="true">${esc(b.t)}</span>`:`<button class="tile en" data-b="${i}">${esc(b.t)}</button>`).join("");
+      $$("[data-b]").forEach(x=>x.onclick=()=>{const k=fill.indexOf(null);if(k<0)return;fill[k]=+x.dataset.b;SFX.play("tick");draw()});
+      $$("[data-s]").forEach(x=>x.onclick=()=>{fill[+x.dataset.s]=null;SFX.play("tick");draw()});$("#chk").disabled=fill.includes(null)};
+    draw();$("#clr").onclick=()=>{fill.fill(null);draw()};
+    const chk=()=>{if(SES._ans||fill.includes(null))return;const ok=bl.every((b,k)=>bank[fill[k]].t.toLowerCase()===b.t.toLowerCase());
+      settle(item,ok,{reveal:`<div class="ex">${sp.who?`<b>${sp.who}</b> `:""}${lineHTML(true)}</div>`,say:()=>TTS.phrase(sp.text,{g:sp.who==="B"?"m":sp.who==="A"?"f":null})})};
+    $("#chk").onclick=chk;KEY=ev=>{if(ev.key==="Enter"&&!SES._ans){ev.preventDefault();chk()}}},
+  shadow(item){const it=item.w;if(!it||!it.conv)return fallbackQ(item);const e=[...it.ex].sort((a,b)=>a.en.length-b.en.length)[0],play=()=>TTS.phrase(e.en,{force:true});
+    qview(item,`<div class="qcard" style="margin-top:10px"><div class="mute">듣고 소리 내어 똑같이 따라 말해 보세요</div>
+      <div class="ex" style="text-align:left">${hl(e)}${sub2(e.ko)}</div>
+      <div class="btns"><button class="btn alt sm" id="play">${ic("play")} 듣기</button>${SRC?`<button class="btn sm" id="mic">${ic("vol")} 말하고 채점</button>`:""}</div>
+      <div class="sub" id="heard" style="margin-top:8px">${SRC?"마이크로 채점하거나, 따라 한 뒤 아래에서 스스로 체크하세요":"따라 말한 뒤 아래에서 스스로 체크하세요 (이 브라우저는 음성 인식 미지원)"}</div>
+      <div class="btns"><button class="btn alt sm" id="hard">어려웠어요</button><button class="btn ok sm" id="did">${ic("check")} 따라 말했어요</button></div></div>`);
+    $("#play").onclick=play;setTimeout(play,300);
+    $("#did").onclick=()=>settle(item,true,{xpMul:.6,reveal:`<div class="mute">스스로 체크한 결과예요. 자신 있게 반복해 보세요.</div>`});
+    $("#hard").onclick=()=>settle(item,false,{reveal:`<div class="ex">${hl(e)}</div>`});
+    KEY=ev=>{if(SES._ans)return;if(ev.key==="1"){ev.preventDefault();$("#hard").click()}else if(ev.key==="2"||ev.key==="Enter"){ev.preventDefault();$("#did").click()}};
+    if(SRC&&$("#mic"))$("#mic").onclick=()=>{try{const r=new SRC();r.lang="en-US";r.maxAlternatives=3;$("#heard").textContent="듣는 중… 말씀하세요";
+      r.onresult=ev=>{const best=[...ev.results[0]].map(a=>[a.transcript,wordSim(e.en,a.transcript)]).sort((a,b)=>b[1]-a[1])[0];const pct=Math.round(best[1]*100);
+        if(best[1]>=.7)settle(item,true,{reveal:`<div class="sub">인식: "${esc(best[0])}" · 단어 일치율 ${pct}%</div>`});else $("#heard").textContent=`인식: "${best[0]}" · 일치율 ${pct}% (70% 이상이면 통과) — 다시 해 보거나 스스로 체크하세요`};
+      r.onerror=ev=>{$("#heard").textContent="음성 인식을 쓸 수 없어요("+ev.error+"). 아래 버튼으로 스스로 체크하세요."};r.start()}catch(err){$("#heard").textContent="음성 인식을 시작하지 못했어요. 스스로 체크해 주세요."}}},
+  formal(item){const f=item.f||shuffle(FORMALS)[0];const opts=shuffle([f.ok,...f.bad]);
+    qview(item,`<div class="qcard" style="margin-top:10px;text-align:left"><div class="mute">이 상황에 가장 알맞은 말은?</div><div style="font-weight:800;font-size:18px;margin-top:6px">${esc(f.sit)}</div></div>`,opts,"en trans");
+    bindOpts(item,opts,f.ok,()=>`<div class="ex">${esc(f.ok)}${sub2(f.why)}</div>`,{say:()=>TTS.phrase(f.ok)})},
+  err(item){const e=item.e||shuffle(ERRS)[0];const opts=shuffle([e.right,e.wrong]);
+    qview(item,`<div class="qcard" style="margin-top:10px"><div class="mute">원어민이 듣기에 자연스러운 문장을 고르세요</div><div class="sub" style="margin-top:4px">하나는 학습자가 자주 하는 실수가 들어 있어요</div></div>`,opts,"en trans");
+    bindOpts(item,opts,e.right,()=>`<div class="ex"><div>${ic("check")} <b>${esc(e.right)}</b></div><div style="text-decoration:line-through;opacity:.6;margin-top:4px">${esc(e.wrong)}</div>${sub2(e.why)}</div>`,{say:()=>TTS.phrase(e.right)})},
+  match(item){const set=item.set&&item.set.length>=3?item.set:matchSet([...SES.fresh,...SES.due]);if(set.length<3)return fallbackQ(item);
+    const Lc=shuffle(set),Rc=shuffle(set),sessIds=new Set([...SES.fresh,...SES.due].map(x=>x.id));let sel=null,done=0,miss=0;const missed=new Set(),t0=Date.now();
+    qview(item,`<div class="row" style="justify-content:space-between;margin:8px 0"><span class="sub">영어와 뜻을 짝지어 보세요</span><span class="chip" id="mt" aria-live="off">0.0초</span></div>
+      <div class="mgrid"><div class="mcol">${Lc.map(w=>`<button class="mcard ${w.conv?"en":"en"}" data-l="${esc(w.id)}">${esc(w.disp)}</button>`).join("")}</div>
+      <div class="mcol">${Rc.map(w=>`<button class="mcard" data-r="${esc(w.id)}">${esc(w.ko)}</button>`).join("")}</div></div>`);
+    const tm=setInterval(()=>{const e=$("#mt");if(!e)return clearInterval(tm);e.textContent=((Date.now()-t0)/1000).toFixed(1)+"초"},100);
+    const side=b=>b.dataset.l!=null?"l":"r",idOf=b=>b.dataset.l??b.dataset.r;
+    const click=b=>{if(SES._ans||b.classList.contains("done"))return;
+      if(!sel||side(sel)===side(b)){$$(".mcard.sel").forEach(x=>x.classList.remove("sel"));sel=b;b.classList.add("sel");SFX.play("tick");return}
+      const a=sel;sel=null;a.classList.remove("sel");
+      if(idOf(a)===idOf(b)){[a,b].forEach(x=>{x.classList.add("done");x.disabled=true});done++;SFX.play("combo",Math.min(done,10));buzz(10);
+        if(done===set.length){clearInterval(tm);const sec=((Date.now()-t0)/1000).toFixed(1),ok=miss===0;
+          missed.forEach(id=>{if(sessIds.has(id))SES.wrongSet.add(id)});
+          settle(item,ok,{noRequeue:true,xpMul:ok?1.5:.6,reveal:`<div class="sub" style="margin-top:4px">${set.length}쌍 · ${sec}초 · 실수 ${miss}회</div>${missed.size?`<div class="mute">헷갈린 것: ${[...missed].map(id=>esc(set.find(x=>x.id===id)?.disp||"")).join(", ")}</div>`:""}`})}}
+      else{miss++;missed.add(idOf(a));missed.add(idOf(b));[a,b].forEach(x=>{x.classList.add("bad");setTimeout(()=>x.classList.remove("bad"),450)});SFX.play("no");buzz([20,30,20])}};
+    $$(".mcard").forEach(b=>b.onclick=()=>click(b));KEY=null},
+};
+
+/* ---------- 설정: 퀴즈 방식 · 난이도 · 유형별 정답률 ---------- */
+function quizSettingsHTML(){
+  const types=modeTypes(),sel=new Set(st.set.qtypes||[]);
+  const rows=types.map(t=>{const s=st.qs&&st.qs[qkey(t)],acc=s&&s.n?Math.round(s.ok/s.n*100):null,weak=s&&s.n>=5&&s.ok/s.n<.7;
+    return `<div class="set" style="min-height:48px"><div class="grow"><b style="font-size:14px">${QT[t].name}${weak?` <span class="pos" style="background:var(--no-soft);color:var(--no)">약점·비중↑</span>`:""}</b>
+      <div class="bar" style="height:6px;margin-top:6px"><i style="width:${acc??0}%"></i></div></div><div class="mute" style="min-width:76px;text-align:right">${s?`${acc}% · ${s.n}회`:"기록 없음"}</div></div>`}).join("");
+  return `<div class="card"><h3>${ic("layers")} 퀴즈 방식</h3>
+    <div class="seg" role="radiogroup" aria-label="퀴즈 방식">${[["mix","혼합 학습"],["type","유형별 연습"]].map(([k,n])=>`<button role="radio" aria-checked="${st.set.qmode===k}" class="${st.set.qmode===k?"on":""}" data-qm="${k}">${n}</button>`).join("")}</div>
+    <div class="mute" style="margin:8px 0">${st.set.qmode==="mix"?"유형이 골고루 섞이고 같은 유형은 연속으로 나오지 않아요. 새 표현은 보기형부터, 복습할수록 주관식·청해가 늘어요.":"고른 유형만 학습한 표현(최대 10개)으로 연습해요. 어색한 문장 찾기·격식 판별은 학습 전에도 가능해요."}</div>
+    ${st.set.qmode==="type"?`<div class="chips" style="flex-wrap:wrap">${types.map(t=>`<button class="fchip ${sel.has(t)?"on":""}" data-qt="${t}" aria-pressed="${sel.has(t)}">${QT[t].name}</button>`).join("")}</div>`:""}
+    <b style="display:block;margin-top:10px">난이도</b>
+    <div class="seg" role="radiogroup" aria-label="난이도" style="margin-top:6px">${[["easy","쉬움"],["normal","보통"],["hard","어려움"]].map(([k,n])=>`<button role="radio" aria-checked="${st.set.qlevel===k}" class="${st.set.qlevel===k?"on":""}" data-ql="${k}">${n}</button>`).join("")}</div>
+    <div class="mute" style="margin-top:6px">쉬움: 보기형 위주·주관식 힌트 기본 제공 · 어려움: 주관식·청해 비중↑</div></div>
+  <div class="card"><h3>${ic("trophy")} 유형별 정답률 <span class="mute" style="font-weight:600">· ${MODE==="conv"?"실용 회화":"교재"}</span></h3>${rows}
+    <div class="mute" style="margin-top:8px">5회 이상 풀었는데 정답률이 70% 미만인 유형은 혼합 학습에서 더 자주 나와요.</div></div>`;
+}
+function bindQuizSettings(){
+  $$("[data-qm]").forEach(b=>b.onclick=()=>{st.set.qmode=b.dataset.qm;save();SFX.play("tick");scrSettings()});
+  $$("[data-ql]").forEach(b=>b.onclick=()=>{st.set.qlevel=b.dataset.ql;save();SFX.play("tick");scrSettings()});
+  $$("[data-qt]").forEach(b=>b.onclick=()=>{const t=b.dataset.qt,s=new Set(st.set.qtypes||[]);s.has(t)?s.delete(t):s.add(t);st.set.qtypes=[...s];save();SFX.play("tick");scrSettings()});
 }
 
 TAB="home";tabs();scrConvHome();
