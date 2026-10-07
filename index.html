@@ -1251,8 +1251,8 @@ function findExamples(book,words){
    ========================================================================== */
 const {KO,ALIAS}=loadKO(KO_RAW);
 const LS="storyvoca_v1";
-const DEF_ST=()=>({p:{},wrong:{},days:[],goal:10,today:{d:"",n:0},xp:0,scope:"all",set:{sfx:true,vol:.6,tts:true,auto:true,rate:.9,voice:"",gender:"f",vib:true,theme:"auto",qmode:"mix",qtypes:[],qlevel:"normal"},custom:[],lastBook:"",qs:{}});
-let st=(()=>{try{const s=JSON.parse(localStorage.getItem(LS)||"null");if(s){const d=DEF_ST();return {...d,...s,set:{...d.set,...(s.set||{})},today:s.today||d.today}}}catch(e){}return DEF_ST()})();
+const DEF_ST=()=>({p:{},wrong:{},days:[],goal:10,today:{d:"",n:0},xp:0,scope:"all",set:{sfx:true,vol:1,volMax:true,tts:true,auto:true,rate:.9,voice:"",gender:"f",vib:true,theme:"auto",qmode:"mix",qtypes:[],qlevel:"normal"},custom:[],lastBook:"",qs:{}});
+let st=(()=>{try{const s=JSON.parse(localStorage.getItem(LS)||"null");if(s){const d=DEF_ST(),m={...d,...s,set:{...d.set,...(s.set||{})},today:s.today||d.today};if(!(s.set&&s.set.volMax)){m.set.vol=1;m.set.volMax=true}return m}}catch(e){}return DEF_ST()})();
 /* 실용 회화 진도는 별도 키에 분리 저장 (교재 모드와 충돌 없음) */
 const LSC="storyvoca_conv_v1";
 const DEF_CS=()=>({p:{},wrong:{},today:{d:"",n:0},goal:10,scope:"all"});
