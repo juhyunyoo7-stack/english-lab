@@ -1,7 +1,8 @@
 // 앱 셸은 설치 때 캐시, mp3는 재생한 것부터 캐시(전체 40MB를 한 번에 받지 않음)
-const V="sb-v4",SHELL=["./","index.html","manifest.webmanifest","icons/icon-192.png","icons/icon-512.png"];
+// 캐시 키는 "sb-" 접두사만 관리한다(같은 도메인의 일본어 앱 "sn-" 캐시를 지우지 않기 위함)
+const V="sb-v5",SHELL=["./","index.html","manifest.webmanifest","icons/icon-192.png","icons/icon-512.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
-self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
+self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith("sb-")&&x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{
   const r=e.request;if(r.method!=="GET"||new URL(r.url).origin!==location.origin)return;
   const audio=/\.mp3$/.test(r.url);
